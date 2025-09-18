@@ -1,0 +1,89 @@
+﻿@model List<CapaEntidad.NotificacionAdmin>
+
+@{
+    ViewBag.Title = "NotificacionAdmin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .notificacion-item {
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        cursor: pointer;
+    }
+
+        .notificacion-item:hover {
+            background-color: #e9f3ff; /* Azul claro */
+            box-shadow: 0 0 10px rgba(35, 116, 225, 0.2); /* Brillo sutil */
+        }
+
+        /* Opcional: un overlay suave al hacer hover */
+        .notificacion-item::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(35, 116, 225, 0.05); /* Azul claro translúcido */
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 0.375rem; /* igual que rounded */
+        }
+
+        .notificacion-item:hover::after {
+            opacity: 1;
+        }
+</style>
+
+<div>
+</div>
+<div class="d-flex justify-content-center align-items-center mt-5">
+    <div class="card w-75">
+        <div class="card-header">
+            <i class="fa-solid fa-bell"></i>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="row">
+                    <div class="d-flex gap-3 mb-4">
+                        <button class="btn tab rounded-pill" style="width: 120px; background-color: #2374e1; color: white;">Todas</button>
+                        <button class="btn tab rounded-pill" style="width: 120px; background-color: #4dd33d; color: white;">No Leídas</button>
+                    </div>
+
+                </div>
+            </div>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                var noti = Model[i];
+                var isHidden = i >= 6 ? "d-none extra-noti" : ""; // Oculta desde la 7ma
+                                                                  //<div class="alert alert-light border rounded shadow-sm mb-2 @isHidden">
+                <div class="alert alert-light border rounded shadow-sm mb-2 notificacion-item @isHidden">
+
+                    <strong>@noti.Mensaje</strong>
+                    <br />
+                    <small class="text-muted">@noti.Fecha.ToString("dd/MM/yyyy hh:mm tt")</small>
+                    @if (!noti.Leido)
+                    {
+                        <span class="badge bg-primary ms-2">Nuevo</span>
+                    }
+                </div>
+            }
+            <div class="text-center mt-3">
+                <button id="btnVerMas" class="btn btn-outline-primary">Ver más</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section Scripts {
+    <script>
+        document.getElementById("btnVerMas").addEventListener("click", function () {
+            // Mostrar todas las notificaciones ocultas
+            document.querySelectorAll(".extra-noti").forEach(function (el) {
+                el.classList.remove("d-none");
+            });
+
+            // Ocultar el botón después de mostrar todo
+            this.style.display = "none";
+        });
+    </script>
+}
+

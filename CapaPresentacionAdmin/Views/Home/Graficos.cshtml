@@ -1,0 +1,344 @@
+﻿
+@{
+    ViewBag.Title = "Graficos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    body {
+        background-color: #f8f9fa; /* fondo blanco suave */
+        color: #212529; /* texto oscuro suave */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #1a1a1a;
+        font-size: 28px;
+        letter-spacing: 0.5px;
+    }
+    .panel-hover {
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1px solid #dee2e6;
+        padding: 20px;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    }
+        .panel-hover:hover {
+            border-color: #0077ff;
+            box-shadow: 0 4px 20px rgba(0, 119, 255, 0.15);
+            transform: scale(1.01);
+            background-color: #fefefe;
+        }
+    .panel-heading {
+        font-weight: 600;
+        font-size: 18px;
+        margin-bottom: 15px;
+        color: #0077ff;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-align: center; /* <-- Aqui centre el texto */
+    }
+    .panel-body {
+        text-align: center;
+    }
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        justify-content: center;
+    }
+    .col-lg-6 {
+        flex: 1 1 45%;
+        min-width: 300px;
+    }
+    canvas {
+        max-width: 100%;
+        height: auto;
+    }
+    .musk-button {
+        background: #ffffff;
+        color: #828385;
+        border: 2px solid #b9cff0; /* Cian moderno */
+        font-weight: 600;
+        padding: 10px 24px;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        box-shadow: 0 0 5px rgba(0, 188, 212, 0.2);
+    }
+
+        .musk-button:hover {
+            background: #82e1ed;
+            color: white;
+            box-shadow: 0 0 12px rgba(0, 188, 212, 0.6);
+        }
+
+        .musk-button:focus {
+            outline: none;
+            box-shadow: 0 0 8px rgba(0, 188, 212, 0.8);
+        }
+</style>
+
+<h2>Visualización de Datos</h2>
+
+@*<div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">*@ @*Puro CSS*@
+<div class="d-flex justify-content-center gap-4 mt-3">
+    @*CON CLASES BOOTSTRAP*@
+    <button id="btnBarra" class="musk-button"> Grafica Barra </button>
+    <button id="btnPastel" class="musk-button">Grafica Pastel</button>
+</div>
+
+<div class="row">
+    <div class="row" id="graficoBarra">
+        <div class="col-lg-6 mt-4">
+            <div class="panel-hover">
+                <div class="panel-heading">Reporte Solicitudes Totales: Últimos 2 Meses</div>
+                <div class="panel-body">
+                    <canvas id="myChart1" width="150" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mt-4">
+            <div class="panel-hover">
+                <div class="panel-heading">Reporte Solicitud por Tipo: Últimos 2 Meses</div>
+                <div class="panel-body">
+                    <canvas id="myChart2" width="150" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Aqui mostrare las solicitudes pero en graficos Pastel*@
+    <div class="row" id="graficoPastel">
+        <div class="col-lg-6 mt-4">
+            <div class="panel-hover">
+                <div class="panel-heading">Reporte Solicitudes Totales: Últimos 2 Meses</div>
+                <div class="panel-body">
+                    <canvas id="myChart1Pastel" width="150" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mt-4">
+            <div class="panel-hover">
+                <div class="panel-heading">Reporte Solicitud por Tipo: Últimos 2 Meses</div>
+                <div class="panel-body">
+                    <canvas id="myChart2Pastel" width="150" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> @*TERMINA CONTENEDOR DE SUB CONTENEDORES DE GRAFICOS*@
+
+
+
+
+
+@section scripts{
+    <script>
+
+        //Gestionamos datos en Grafica Queja Sugerencia Kudo. Grafica Barra
+          jQuery.ajax({
+          type: "GET",
+          url: '@Url.Action("ReporteQSK", "Home")',
+          dataType: "json",
+          contentType:"application/json;charset=utf-8",
+          success: function (data) {
+              console.log(data)
+
+              var array3Tipos = [];
+              var array3can = [];
+
+              for (var i = 0; i < data.length; i++) {
+                  array3Tipos.push(data[i].TipoSolicitud)
+                  array3can.push(data[i].Total)
+              }
+              var controlBar2 = document.getElementById("myChart2");
+              var graficoBar2 = new Chart(controlBar2, {
+                  type: 'bar',
+                  data: {
+                      labels: array3Tipos,
+                      datasets: [{
+                          label: "Sugerencias",
+                          data:array3can,
+                          backgroundColor: [
+                              "rgba(255, 99, 132, 0.6)",
+                              "rgba(75, 192, 192, 0.6)",
+                              "rgba(255, 206, 86, 0.6)"
+                          ]
+                      }],
+                      options: {
+                          scales: {
+                              x: {
+                                  grid: {
+                                      display: false //Linea de Eje "x" ya no es visible
+                                  }
+                              },
+                              y: {
+                                  grid: {
+                                      display: true //Linea de Eje "Y" es visible
+                                  }
+                              }
+                          }
+                      }
+                  },
+              });
+
+          },
+          error: function (error) {
+              console.error("Error al obtener los datos:", error);
+          }
+              }) //Termina Grafica Barra
+
+        //Gestionamos datos en Grafica General de Solicitudes. Grafica Barra
+        jQuery.ajax({
+            type: "GET",
+            url: '@Url.Action("ResporteSolicitudes", "Home")',
+            dataType: "json",
+            contentType:"application/json;charset=utf-8",
+            success: function (data) {
+                console.log(data)
+
+                var arrayMes = [];
+                var arrayCantidad = [];
+
+                for (var i = 0; i < data.length; i++) {
+                    arrayMes.push(data[i].Mes)
+                    arrayCantidad.push(data[i].Cantidad)
+                }
+
+                var controlBar = document.getElementById("myChart1");
+                var graficoBar = new Chart(controlBar, {
+                    type: 'bar',
+                    data: {
+                        labels: arrayMes,
+                        datasets: [{
+                            label: "Solicitudes",
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                            data: arrayCantidad,
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false //Linea de Eje "x" ya no es visible
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    display: true //Linea de Eje "Y" es visible
+                                }
+                            }
+                        }
+                    }
+                });
+            },
+            error: function (error) {
+                console.error("Error al obtener los datos:", error);
+            }
+        })//Termina Grafica Barra
+
+        //Graficas de Pastel//
+
+        //Gestionamos datos en Grafica Queja Sugerencia Kudo. Grafica Pastel
+         jQuery.ajax({
+            type: "GET",
+            url: '@Url.Action("ReporteQSK", "Home")',
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            success: function (data) {
+                console.log(data)
+
+                var array3Tipos = [];
+                var array3can = [];
+
+                for (var i = 0; i < data.length; i++) {
+                    array3Tipos.push(data[i].TipoSolicitud)
+                    array3can.push(data[i].Total)
+                }
+                var controlPas2 = document.getElementById("myChart2Pastel");
+                var graficoPas2 = new Chart(controlPas2, {
+                    type: 'pie',
+                    data: {
+                        labels: array3Tipos,
+                        datasets: [{
+                            label: "Sugerencias",
+                            data: array3can,
+                            backgroundColor: [
+                                "rgba(255, 99, 132, 0.6)",
+                                "rgba(75, 192, 192, 0.6)",
+                                "rgba(255, 206, 86, 0.6)"
+                            ]
+                        }],
+                    },
+                });
+
+            },
+            error: function (error) {
+                console.error("Error al obtener los datos:", error);
+            }
+        }) //Termina la Grafica
+
+        //Gestionamos datos en Grafica Solicitudes Generales. Grafica Pastel
+       jQuery.ajax({
+          type: "GET",
+          url: '@Url.Action("ResporteSolicitudes", "Home")',
+          dataType: "json",
+          contentType: "application/json;charset=utf-8",
+          success: function (data) {
+              console.log(data)
+
+              var arrayMes = [];
+              var arrayCantidad = [];
+
+              for (var i = 0; i < data.length; i++) {
+                  arrayMes.push(data[i].Mes)
+                  arrayCantidad.push(data[i].Cantidad)
+              }
+              var controlPas2 = document.getElementById("myChart1Pastel");
+              var graficoPas2 = new Chart(controlPas2, {
+                  type: 'pie',
+                  data: {
+                      labels: arrayMes,
+                      datasets: [{
+                          label: "Sugerencias",
+                          data: arrayCantidad,
+                          backgroundColor: [
+                              "rgba(255, 99, 132, 0.6)",
+                              "rgba(75, 192, 192, 0.6)",
+                              "rgba(255, 206, 86, 0.6)"
+                          ]
+                      }],
+                  },
+              });
+
+          },
+          error: function (error) {
+              console.error("Error al obtener los datos:", error);
+          }
+       }) //Termina la Grafica
+
+       //Declaramos nuestros ID's
+        const btnBarra = document.getElementById('btnBarra');
+        const btnPastel = document.getElementById('btnPastel');
+        const graficoBarra = document.getElementById('graficoBarra');
+        const graficoPastel = document.getElementById('graficoPastel');
+
+        btnBarra.addEventListener('click', () => {
+            graficoBarra.style.display = 'flex'; //aqui tambien puedo usar 'block'
+            graficoPastel.style.display = 'none'; //ocultamos grafico Pastel
+        });
+
+        btnPastel.addEventListener('click', () => {
+            graficoBarra.style.display = 'none';//oculatamos el grafico Barra
+            graficoPastel.style.display = 'flex';//mostramos el grafico Pastel
+        });
+
+    </script>
+}

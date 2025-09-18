@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "Home Page - FEEDBACK 360";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            color: #007bff;
+        }
+
+        .lead {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #343a40;
+        }
+
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+        }
+
+            .btn-custom:hover {
+                background-color: #0056b3;
+                color: white;
+            }
+
+        .card {
+            border: 1px solid #dee2e6; /* Borde gris suave */
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            padding-top: 15px;
+            background-color: white;
+        }
+
+            /* Eliminamos la franja superior */
+            .card::before {
+                content: none;
+            }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0, 123, 255, 0.2);
+            }        
+
+        .logo {
+            max-width: 550px; /* Ajusta el tamaño según sea necesario */
+            margin-bottom: 5px; /* Espacio debajo del logo */
+            margin-top:0px;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container mt-5">
+        <section class="text-center" aria-labelledby="feedbackTitle">
+            @*<h1 id="title">Bienvenido</h1>*@
+            <img src="~/Content/imag/Logo6.png" alt="" class="logo">
+            <p class="lead">Tu plataforma integral para gestionar quejas y sugerencias de manera eficiente y efectiva.</p>
+            <p><a href="#learnMore" class="btn btn-custom btn-lg">Aprende más &raquo;</a></p>
+        </section>
+
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="card p-3">
+                    <h2 class="section-title">Cómo Funciona</h2>
+                    <p>FEEDBACK 360 te permite enviar quejas y sugerencias de forma rápida y sencilla, asegurando que tu voz sea escuchada.</p>
+                    <p><a class="btn btn-outline-dark" href="#howItWorks">Aprende más &raquo;</a></p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-3">
+                    <h2 class="section-title">Beneficios</h2>
+                    <p>Mejora la comunicación y la satisfacción del cliente al proporcionar un canal directo para expresar opiniones y preocupaciones.</p>
+                    <p><a class="btn btn-outline-dark" href="#benefits">Aprende más &raquo;</a></p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-3">
+                    <h2 class="section-title">Soporte</h2>
+                    <p>Contamos con un equipo de soporte listo para ayudarte a resolver cualquier duda o inconveniente que puedas tener.</p>
+                    <p><a class="btn btn-outline-dark" href="#support">Aprende más &raquo;</a></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    @*<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>*@
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

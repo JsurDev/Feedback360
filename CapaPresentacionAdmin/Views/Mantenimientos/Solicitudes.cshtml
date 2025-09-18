@@ -1,0 +1,643 @@
+﻿@{
+    ViewBag.Title = "Solicitudes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    table {
+        table-layout: auto;
+        width: 100%;
+    }
+    .auto-width {
+        white-space: nowrap;
+        width: 1%;
+    }
+</style>
+<ol class="breadcrumb mb-4 mt-4">
+    <li class="breadcrumb-item"><a href="index.html">Solicitudes</a></li>
+    <li class="breadcrumb-item active">Solicitudes</li>
+</ol>
+<div class="card">
+    <div class="card-header">
+        <i class="fa-solid fa-gavel"></i>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="d-flex justify-content-start gap-3">
+                <button type="button" class="btn btn-success" onclick="abrirModal()">Nuevo Solicitud</button>
+                <button type="button" class="btn btn-success" onclick="descargarExcel()">Descargar Excel</button>
+
+            </div>
+        </div>
+        <hr /> @*Linea divisoria*@
+
+        <!-- Contenedor para mostrar la referencia de la solicitud -->
+        <div id="alert-container"></div>
+
+        <!-- COMIENZA LA TABLA-->
+        <table id="tSolicitud" class="display cell-border" style="width:100%">
+            @*Inicia la tabla*@
+            <thead>
+                <tr>
+                    <th class="auto-width">Id Solicitud</th>
+                    <th class="auto-width">Id Cliente</th>
+                    <th class="auto-width">Categoria</th>
+                    <th>Asignado a</th>
+                    <th>Estado</th>
+                    <th>Comentarios</th>
+                    <th class="auto-width">Nombre</th>
+                    <th class="auto-width">Apellido</th>
+                    <th class="auto-width">Email</th>
+                    <th class="auto-width">Telefono</th>
+                    <th>Referencia</th>
+                    <th>Estatus</th>
+                    <th class="auto-width">Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                </tr>
+            </tbody>
+        </table> @*Termina la tabla*@
+    </div>
+</div>
+@*Modal para crear un nuevo cliente*@
+<div class="modal fade" id="FormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl">
+        @*agregue "modal-xl" para que sea mas largo y se vea mas presentable*@
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"> Solicitud </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!---->
+            <div class="modal-body">
+                @*<input id="txtid" type="hidden" value="0" />*@ @*usuario en CERO para nuevo perfiles*@
+                <form id="formSolicitud">
+                    <!-- Aquí comienza el formulario -->
+
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <label for="lblId" class="form-label">Id Solicitud</label>
+                            <input type="text" class="form-control" id="txtId" style="background-color: #f0f0f0; border: 1px solid #ccc; color: #6c757d;" readonly />
+                        </div>
+                        <div class="col-6">
+                            <label for="lblIdCliente" class="form-label">Id Cliente</label>
+                            <input type="text" class="form-control" name="IdCustomer" id="txtIdCliente" placeholder="Ingrese un Id" />
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="lblNombres" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="txtNombres" placeholder="Digite un Nombre" readonly />
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="lblApellidos" class="form-label">Apellidos</label>
+                            <input type="text" class="form-control" id="txtApellidos" placeholder="Digite un Apellido" readonly />
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="lblEmail" class="form-label">Correo Electronico</label>
+                            <input type="text" class="form-control" id="txtEmail" placeholder="correo@ejemplo.com" required readonly />
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="lblTelefono" class="form-label">Telefono</label>
+                            <input type="text" class="form-control" id="txtTelefono" placeholder="Ej: 22222222" readonly />
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="lblCategoria" class="form-label">Categoria</label>
+                            <select id="cboCategoria" class="form-select">
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="lblAsignado" class="form-label">Asignado a</label>
+                            <select id="cboAsignado" class="form-select">
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="lblEstado" class="form-label">Estado Actual</label>
+                            <select id="cboEstado" class="form-select">
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="lblEstatus" class="form-label">Estado</label>
+                            <select id="cbEstatus" class="form-select">
+                                <option selected>Selecciona una Opcion</option>
+                                <option value="1">Activo</option>
+                                <option value="0">Inactivo</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="txtComentario" class="form-label">Comentarios</label>
+                            <textarea class="form-control" id="txtComentario" placeholder="Comentarios" rows="3" style="resize: none;" maxlength="100" oninput="actualizarContador()"></textarea>
+                            <small id="contador" class="form-text text-muted">100 caracteres restantes</small>
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="txtComentario" class="form-label">Respuesta</label>
+                            <textarea class="form-control" id="txtRespuesta" placeholder="Respuesta" rows="3" style="resize: none;" maxlength="100" oninput="actualizarContador()"></textarea>
+                            <small id="contador" class="form-text text-muted">100 caracteres restantes</small>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="lblReferencia" class="form-label">Referencia</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="txtReferencia" placeholder="Referencia" readonly style="background-color: #f0f0f0; border: 1px solid #ccc; color: #6c757d;" />
+                                <span class="input-group-text" id="basic-addon2"><i class="fas fa-lock"></i></span>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <div id="mensajeError" class="alert alert-danger" role="alert" style="display: none;">
+                                    Alerta!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form> @*termina el formulario*@
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        //Construyendo la descarga de Excel para SOLICITUDES
+        function descargarExcel() {
+            window.location.href = '@Url.Action("DescargarExcel", "Mantenimientos")';
+        }
+
+
+        //Aqui estamos validando que el Rol 2 y 4 no puedan ingresar una Respuesta en el TEXAREA
+        $(document).ready(function () {
+            // Cada vez que se abra el modal, valida el rol
+            $('#FormModal').on('shown.bs.modal', function () {
+                if (idRolUsuario === 2 || idRolUsuario === 4) {
+                    $('#txtRespuesta').prop('readonly', true);
+                    $('#txtRespuesta').css({
+                        'background-color': '#f0f0f0',
+                        'color': '#6c757d',
+                        'border': '1px solid #ccc'
+                    });
+                } else {
+                    $('#txtRespuesta').prop('readonly', false);
+                    $('#txtRespuesta').css({
+                        'background-color': '',
+                        'color': '',
+                        'border': ''
+                    });
+                }
+            });
+        });
+
+     //Guardo Session del usuario para bloquear acceso a bontones de editar y eliminar. Bloqueamos el ingreso de Respuesta
+     var idRolUsuario = @(((CapaEntidad.Usuario)Session["Usuario"]).oPuesto.IdPuesto);
+
+        var tabladata;
+       tabladata = $("#tSolicitud").DataTable({
+       responsive: true,
+       ordering: false,
+       "ajax": {
+       url: '@Url.Action("ListarSolicitud", "Mantenimientos")',
+       type: "GET",
+       dataType: "json"
+            },
+           "columns": [
+               { "data": "IdSolicitud" },
+               { "data": "IdCliente" },
+               { "data": "oCategoria.Tipo" },
+               { "data": "oUsuario.Nombre" },
+               {
+                   "data": "oEstado.EstadoActual",
+                   "render": function (valor) {
+                       valor = valor.trim().toLowerCase(); // normaliza
+
+                       switch (valor) {
+                           case "recibida":
+                               return '<span class="badge" style="background-color: #0dcaf0; color: white;font-size: 14px;">Recibida</span>'; // azul cielo
+                           case "en revision":
+                               return '<span class="badge" style="background-color: #17a2b8; color: white;font-size: 14px;">En Revisión</span>'; // azul petróleo
+                           case "pendiente de informacion":
+                               return '<span class="badge" style="background-color: #ffc107; color: #212529;font-size: 14px;">Pendiente de Información</span>'; // amarillo profesional
+                           case "en proceso":
+                               return '<span class="badge" style="background-color: #007bff; color: white;font-size: 14px;">En Proceso</span>'; // azul fuerte
+                           case "resuelta":
+                               return '<span class="badge" style="background-color: #28a745; color: white;font-size: 14px;">Resuelta</span>'; // verde éxito
+                           case "cerrada":
+                               return '<span class="badge" style="background-color: #6c757d; color: white;font-size: 14px;">Cerrada</span>'; // gris oscuro
+                           case "rechazada":
+                               return '<span class="badge" style="background-color: #dc3545; color: white;font-size: 14px;">Rechazada</span>'; // rojo profesional
+                           default:
+                               return '<span class="badge" style="background-color: #adb5bd; color: white;font-size: 14px;">Desconocido</span>'; // gris neutro
+                       }
+                   }
+               },
+               { "data": "Comentario" },
+               { "data": "Nombre" },
+               { "data": "Apellido" },
+               { "data": "Email" },
+               { "data": "Telefono" },
+               { "data": "Referencia" },
+               {
+                   "data": "Estatus", "render": function (valor) {
+                       if (valor) {
+                           return '<span class="badge bg-success">Activo</span>';
+                       } else {
+                           return '<span class="badge bg-danger">Inactivo</span>';
+                       }
+                   }
+               },
+               //Lo desactive para poder Usar la session guardada de Usuario y bloquear los bontones de edicion y eliminacion
+               //{
+               //    "defaultContent":
+               //        '<button type="button" class="btn btn-outline-success btn-sm btn-editar"><i class="fas fa-marker"></i></button>' + ' ' +
+               //        '<button type="button" class="btn btn-outline-danger btn-sm sm-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
+               //    "orderable": false,
+               //    "searchable": false,
+               //    "width": "50px"
+               //}
+               //En esta nuevo codido , Ocultamos los botones de editar y eliminar para los roles 2 y 4. 
+               {
+                   "data": null,
+                   "render": function (data, type, row, meta) {
+                       if (idRolUsuario === 2 || idRolUsuario === 4) {
+                           return ''; // No mostrar botones
+                       } else {
+                           return `
+                        <button type="button" class="btn btn-outline-success btn-sm btn-editar">
+                            <i class="fas fa-marker"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-danger btn-sm btn-eliminar">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                `                ;
+                       }
+                   },
+                   "orderable": false,
+                   "searchable": false,
+                   "width": "50px"
+               }//NO QUISE OCULATAR LA COLUMNA ENTERA, SOLO LOS BOTONES. El miedo fue por las 'childs' columns.
+           ],
+           "language": {
+         "url": "https://cdn.datatables.net/plug-ins/2.2.2/i18n/es-ES.json"
+    }
+       }); //Termina la tabla
+
+            //LLAMAMOS LAS CATEGORIAS para crear la SOLICITUD
+            jQuery.ajax({
+            url: '@Url.Action("ListarCategorias", "Mantenimientos")',
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccione una opcion ").appendTo("#cboCategoria");
+                $.each(data.data, function (index, item) {
+                    $("<option>").attr({ "value": item.IdCategoria }).text(item.Tipo).appendTo("#cboCategoria");
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+            });
+
+            //LLAMAMOS A LOS USUARIOS internos del sistema
+            jQuery.ajax({
+            url: '@Url.Action("ListarUsuarios", "Home")',
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccione una opcion ").appendTo("#cboAsignado");
+                $.each(data.data, function (index, item) {
+                    $("<option>").attr({ "value": item.IdUsuario }).text(item.Nombre).appendTo("#cboAsignado");
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+            });
+
+            //LLAMAMOS A LOS ESTADOS DE LA SOLICITUD
+            jQuery.ajax({
+            url: '@Url.Action("ListarEstados", "Mantenimientos")',
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccione una opcion ").appendTo("#cboEstado");
+                $.each(data.data, function (index, item) {
+                    $("<option>").attr({ "value": item.IdEstado }).text(item.EstadoActual).appendTo("#cboEstado");
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+            });
+
+        // Agregando método personalizado para regex
+        $.validator.addMethod("soloNumerosEnteros", function (value, element) {
+            return this.optional(element) || /^\d+$/.test(value);  // Regex para aceptar solo números enteros
+        }, "Ingrese solo números enteros (Id válido).");
+
+        // Validación del formulario
+        $("#formSolicitud").validate({
+            rules: {
+                IdCustomer: {
+                    required: true,
+                    soloNumerosEnteros: true
+                },
+                cboAsignado: {
+                    required: true
+                },
+                cboCategoria :{
+                    required:true
+                },
+                cboEstado: {
+                    required:true
+                },
+                cbEstatus: {
+                    required:true
+                },
+                txtComentario: {
+                    required: true,
+                    maxlength: 100
+                }
+            },
+            messages: {
+                IdCustomer: "- Por favor ingrese un número entero válido",
+                cboAsignado: "- Por favor selecciona una opción válida",
+                cboCategoria: "- Por favor selecciona una opción válida",
+                cboEstado: "- Por favor selecciona una opción válida",
+                cbEstatus: "- Por favor selecciona una opción válida",
+                txtComentario: {
+                    required: "- Por favor ingrese un comentario",
+                    maxlength: "- El comentario no puede exceder los 100 caracteres"
+                }
+            },
+            errorElement: "div",
+            errorLabelContainer: ".alert-danger"
+        }); // Terminamos toda la validación
+
+        function abrirModal(jsonData)
+        {
+            $("#txtId").val("");
+            $("#txtIdCliente").val("");
+            $("#cboCategoria").val($("#cboCategoria option:first").val());
+            $("#cboAsignado").val($("#cboAsignado option:first").val());
+            $("#cboEstado").val($("#cboEstado option:first").val());
+            $("#txtComentario").val("");
+            $("#txtNombres").val("");
+            $("#txtApellidos").val("");
+            $("#txtEmail").val("");
+            $("#txtTelefono").val("");
+            $("#txtReferencia").val("");
+            $("#txtRespuesta").val("");
+            $("#cbEstatus").val(1);
+            $("#mensajeError").hide();
+
+            if (jsonData != null) {
+                $("#txtId").val(jsonData.IdSolicitud); // corregido
+                $("#txtIdCliente").val(jsonData.IdCliente).prop("disabled", true);
+                $("#cboCategoria").val(jsonData.oCategoria.IdCategoria).prop("disabled", true);
+                $("#cboAsignado").val(jsonData.oUsuario.IdUsuario);
+                $("#cboEstado").val(jsonData.oEstado.IdEstado);
+                $("#txtComentario").val(jsonData.Comentario).prop("disabled", true);
+                $("#txtNombres").val(jsonData.Nombre).prop("readonly", true); // no editable
+                $("#txtApellidos").val(jsonData.Apellido).prop("readonly", true);
+                $("#txtEmail").val(jsonData.Email).prop("readonly", true);
+                $("#txtTelefono").val(jsonData.Telefono).prop("readonly", true);
+                $("#txtReferencia").val(jsonData.Referencia);
+                $("#txtRespuesta").val(jsonData.Respuesta);
+                $("#cbEstatus").val(jsonData.Estatus == true ? 1 : 0);
+            }
+            $("#FormModal").modal("show");
+        }//termina abrirModal
+
+        //Contador de Caracteres en txtComentarios
+        function actualizarContador() {
+            var max = 100;
+            var actual = document.getElementById('txtComentario').value.length;
+            var contador = document.getElementById('contador');
+            if (contador) {
+                contador.innerText = (max - actual) + " caracteres restantes";
+            }
+        }
+
+        $("#txtComentario").on("input", actualizarContador);
+
+        $("#FormModal").on("shown.bs.modal", function () {
+            actualizarContador();
+        });
+
+        //Contador de Caracteres en txtRespuesta
+        function actualizarContadorRespuesta() {
+            var max =350;
+            var actual = document.getElementById('txtRespuesta').value.length;
+            var contador = document.getElementById('contador');
+            if (contador) {
+                contador.innerText = (max - actual) + " caracteres restantes";
+            }
+        }
+
+        $("#txtRespuesta").on("input", actualizarContadorRespuesta);
+
+        $("#FormModal").on("shown.bs.modal", function () {
+            actualizarContador();
+        });
+
+        // Declarar variable global al inicio del script
+        var filaSeleccionada = null;
+        $("#tSolicitud tbody").on("click", ".btn-editar", function () {
+            filaSeleccionada = $(this).closest("tr");
+
+            // Si es una fila 'child', obtener la real (la que tiene los datos)
+            if (filaSeleccionada.hasClass("child")) {
+                filaSeleccionada = filaSeleccionada.prev();
+            }
+            var data = tabladata.row(filaSeleccionada).data();
+            abrirModal(data);
+        });
+
+
+         //para boton eliminar
+        $("#tSolicitud tbody").on("click", '.btn-eliminar', function () {
+            var filaSeleccionada = $(this).closest("tr");
+            // Si la fila es una "child" (responsive), se debe apuntar al padre real
+            if (filaSeleccionada.hasClass("child")) {
+                filaSeleccionada = filaSeleccionada.prev();
+            }
+            var data = tabladata.row(filaSeleccionada).data();
+            //pagamos sweet alert
+        swal({
+            title: "Quieres eliminar la Solicitud?",
+            text: "No lo podras recuperar!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Si,eliminalo!",
+            closeOnConfirm: false
+        },
+            function () {
+                jQuery.ajax({
+                  url: '@Url.Action("EliminarSolicitud", "Mantenimientos")',
+                    type: "POST",
+                    data: JSON.stringify({ IdSol: data.IdSolicitud }),
+                  dataType: "json",
+                  contentType: "application/json; charset=utf-8",
+                  success: function (data){
+                      if (data.resultado) {
+                          tabladata.row(filaSeleccionada).remove().draw();
+                          swal("Registro Borrado","La Solicitud fue eliminada con exito","success");
+                      } else {
+                          swal("Registro no se puede eliminar",data.mensaje,"error");
+                      }
+                  },
+                          error: function (error) {
+                              swal("Error en eliminar!", error, "error");
+                              console.log(error);
+                    },
+                });
+            });
+        }) // Termina el boton eliminar
+
+        //Buscando el Id del cliente
+        $(document).ready(function () {
+        $("#txtIdCliente").on('blur', function () {
+        var idCliente = $(this).val();
+        if (idCliente.length > 0) {
+            $.ajax({
+                url: '@Url.Action("ObtenerClientePorId", "Mantenimientos")',
+                type: "GET",
+                data: { idCliente: idCliente },
+                success: function (response) {
+                    if (response.success) {
+                        var data = response.data;
+                        $("#cboCategoria").val(data.IdCategoria);
+                        $("#cboAsignado").val(data.IdUsuario);
+                        $("#cboEstado").val(data.IdEstado);
+                        $("#txtComentario").val("");
+                        $("#txtNombres").val(data.Nombre);
+                        $("#txtApellidos").val(data.Apellido);
+                        $("#txtEmail").val(data.Email);
+                        $("#txtTelefono").val(data.Telefono);
+                        $("#txtReferencia").val("");
+                        $("#cbEstatus").val(data.Estatus ? 1 : 0);
+                        //$("#cbEstatus").val("")//Pendiente de Verificar : Debe quedar vacio " " o debe quedar con su dato correspondiente
+                    } else {
+                        $("#mensajeError").text(response.message).show();
+                        limpiarCampos(); // Función para limpiar si no encuentra nada
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+    });
+            function limpiarCampos() {
+                $("#cboCategoria").val($("#cboCategoria option:first").val());
+                $("#cboAsignado").val($("#cboAsignado option:first").val());
+                $("#cboEstado").val($("#cboEstado option:first").val());
+                $("#txtComentario").val("");
+                $("#txtNombres").val("");
+                $("#txtApellidos").val("");
+                $("#txtEmail").val("");
+                $("#txtTelefono").val("");
+                $("#txtReferencia").val("");
+                $("#cbEstatus").val(1);
+            }
+        });
+
+        //GUARDAR SOLICITUD : Para los objetos que creamos tenemos que hacer como se ve en el ejemplo del "oCategoria"
+            function Guardar() {
+                var Solicitud = {
+                    IdSolicitud: $("#txtId").val(),
+                    IdCliente: $("#txtIdCliente").val(),
+                    oCategoria: {
+                        IdCategoria: $("#cboCategoria option:selected").val(),
+                        Tipo: $("#cboCategoria option:selected").text(),
+                    },
+                    oUsuario: {
+                        IdUsuario: $("#cboAsignado option:selected").val(),
+                        Nombre: $("#cboAsignado option:selected").text(),
+                    },
+                    oEstado: {
+                        IdEstado: $("#cboEstado option:selected").val(),
+                        EstadoActual: $("#cboEstado option:selected").text(),
+                    },
+                    Comentario: $("#txtComentario").val(),
+                    Nombre: $("#txtNombres").val(),
+                    Apellido: $("#txtApellidos").val(),
+                    Email: $("#txtEmail").val(),
+                    Telefono: $("#txtTelefono").val(),
+                    Referencia: $("#txtReferencia").val(),
+                    Respuesta: $("#txtRespuesta").val(),
+                    //Estatus: $("#cbEstatus").val() == "1" ? true : false,
+                    Estatus: $("#cbEstatus").val() == 1 ? true : false, //probaremos esta opcion
+
+                };//VERIFICAR QUE ESTE ; SEA NECESARIO
+
+             // VALIDAMOS QUE LOS CAMPOS NO QUEDEN VACIOS
+                if (Solicitud.oCategoria.IdCategoria === "0" || Solicitud.oUsuario.IdUsuario === "0" || Solicitud.oEstado.IdEstado === "0" || !Solicitud.Comentario) {
+                    $("#mensajeError").text("Por favor completa todos los campos requeridos.").show();
+                    return;
+                }
+
+                jQuery.ajax({
+                url: '@Url.Action("GuardarSolicitud", "Mantenimientos")',
+                type: "POST",
+                data: JSON.stringify({ obj:Solicitud }), //obj:"
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $(".modal-body").LoadingOverlay("hide");
+                    if (Solicitud.IdSolicitud == 0) { // Nueva creación
+                        if (data.resultado != 0) {
+                            Solicitud.IdSolicitud = data.resultado;
+                            //Asignamos la referencia que viene desde el servidor
+                            Solicitud.Referencia = data.referencia;
+                            tabladata.row.add(Solicitud).draw(false);
+                            $("#FormModal").modal("hide"); // Cerrar modal al agregar
+                            // Mensaje emergente con la referencia
+                            Swal.fire({
+                                title: "Registrado",
+                                html: "La solicitud fue registrada exitosamente.<br><br><strong>Referencia: </strong>" + Solicitud.Referencia,
+                                icon: "success",
+                                confirmButtonText: "OK"
+                            });
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                            Swal.fire("Error", data.mensaje, "error");
+                        }
+                    }
+                    else { // Modificación
+                        if (data.resultado) {
+                            tabladata.row(filaSeleccionada).data(Solicitud).draw(false);
+                            $("#FormModal").modal("hide"); // Cerrar modal al modificar
+                            Swal.fire("Modificado", "La solicitud fue modificada correctamente.", "success");
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                            Swal.fire("Error", data.mensaje, "error");
+                        }
+                    }
+                },
+                error: function (error) {
+                    $(".modal-body").LoadingOverlay("hide");
+                    $("#mensajeError").text("Ha ocurrido un error al procesar la solicitud.");
+                    $("#mensajeError").show();
+                    Swal.fire("Error", "Hubo un problema con la solicitud al servidor.", "error");
+                },
+                beforeSend: function () {
+                    $(".modal-body").LoadingOverlay("show", {
+                        imageResizeFactor: 2,
+                        text: "Cargando...",
+                        size: 14,
+                    });
+                }
+             });
+        }
+    </script>
+}

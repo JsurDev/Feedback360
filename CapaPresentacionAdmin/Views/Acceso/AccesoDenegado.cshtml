@@ -1,0 +1,73 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Acceso Denegado</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            border: 2px solid #dc3545;
+            border-radius: 12px;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #dc3545;
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #6c757d;
+        }
+
+        p {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 30px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+
+            a:hover {
+                background-color: #0056b3;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>403</h1>
+        <h2>Acceso Denegado</h2>
+        <p>No tienes permiso para ver esta página.</p>
+        <a href="@Url.Action("Index","Home")">Regresar</a>
+    </div>
+</body>
+</html>

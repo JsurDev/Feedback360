@@ -1,0 +1,295 @@
+﻿
+@{
+    ViewBag.Title = "BusquedaGrafico";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1 class="mt-4">Busquedas</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active"></li>
+</ol>
+<style>
+    .card-hover:hover {
+        transform: scale(1.03);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+    }
+    .bg-custom-info {
+        background-color: #df6c53;
+        color: white; /* opcional, si necesitas contraste */
+    }
+    .bg-custom-infoEstado {
+        background-color: #df6c53;
+    }
+</style>
+<div class="row g-3">
+    <div class="col-xl-4 col-md-6">
+        <div class="card bg-success text-white mb-4 shadow-sm rounded-4 border-0 card-hover">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <h6>Cantidad Clientes</h6>
+                        <h6 id="totalClientes" class="fw-bold">0</h6>
+                    </div>
+                    <div class="sm-3">
+                        <i class="fa-sharp-duotone opacity-75 fa-regular fa-circle-user fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>@*Termina*@
+    <div class="col-xl-4 col-md-6">
+        <div class="card bg-warning text-white mb-4 shadow-sm rounded-4 border-0 card-hover">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <h6>Total Solicitudes</h6>
+                        <h6 id="totalSolicitudes" class="fw-bold">0</h6>
+                    </div>
+                    <div class="sm-3">
+                        <i class="fa-solid opacity-75 fa-list fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> @*Termina*@
+    <div class="col-xl-4 col-md-6">
+        <div class="card bg-info text-white mb-4 shadow-sm rounded-4 border-0 card-hover">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <h6>Total Quejas</h6>
+                        <h6 id="totalQuejas" class="fw-bold">0</h6>
+                    </div>
+                    <div class="sm-3">
+                        <i class="fa-solid opacity-75 fa-file-invoice fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>@*Termina*@
+    <div class="col-xl-4 col-md-6">
+        <div class="card bg-secondary text-white mb-4 shadow-sm rounded-4 border-0 card-hover">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <h6>Total Sugerencias</h6>
+                        <h6 id="totalSugerencias" class="fw-bold">0</h6>
+                    </div>
+                    <div class="sm-3">
+                        <i class="fa-solid opacity-75 fa-comment fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>@*Termina*@
+    <div class="col-xl-4 col-md-6">
+        <div class="card bg-custom-info text-white mb-4 shadow-sm rounded-4 border-0 card-hover">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <h6>Total Felicitaciones</h6>
+                        <h6 id="totalFelicitaciones" class="fw-bold">0</h6>
+                    </div>
+                    <div class="sm-3">
+                        <i class="fa-solid opacity-75 fa-comment fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> @*Termina el CUADRO DE TOTALES*@
+
+<div class="card mb-4">
+    @*Cuadro Completo de Historiales*@
+    <div class="card-header">
+        <i class="fas fa-tags me-1"></i>
+        Historial de Busquedas
+    </div>
+
+    <div class="card-body">
+        @*Div INTERNO de opciones de busqueda*@
+        <form action="@Url.Action("ExportarSolicitud","Home")" method="post">
+            <div class="row align-items-end">
+                <div class="col-sm-2">
+                    <div class="mb-2">
+                        <label class="form-label">Fecha de Inicio</label>
+                        <input class="form-control" type="text" id="txtfechaInicio" name="fechaInicio" />
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="mb-2">
+                        <label class="form-label">Fecha Final</label>
+                        <input class="form-control" type="text" id="txtfechaFinal" name="fechaFinal" />
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="mb-2">
+                        <label class="form-label">Referencia Solicitud</label>
+                        <input class="form-control" type="text" id="txtreferenciaSolicitud" name="referenciaSolicitud" />
+                    </div>
+                </div>
+                @*BOTONES*@
+                <div class="col-sm-2">
+                    <div class="d-grid mb-2">
+                        <button class="btn btn-primary" id="btnBuscar" type="button">
+                            <i class="fas fa-search"></i>  Buscar
+                        </button>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="d-grid mb-2">
+                        <button class="btn btn-success" type="submit" id="btnDescargarExcel"> @*Aqui descargamos el Excel*@
+                            <i class="fas fa-file-excel"></i> Descargar Excel
+                        </button>
+                    </div>
+                </div>
+                @* TERMINAN LOS BOTONES*@
+            </div>
+        </form>
+        <hr />
+        @**Creamos la Tabla*@
+        <div class="row">
+            <div class="col-sm-12">
+                <table id="tBusqueda" class="display cell-border" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Fecha Creacion</th>
+                            <th>Cliente</th>
+                            <th>Solicitud</th>
+                            <th>Referencia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div> @*TERMINA LA TABLA*@
+    </div>@*Termina el CUADRO DE BUSQUEDAS*@
+</div>@*Termina el CUADRO COMPLETO DE HISTORIAL DE BUSQUEDAS*@
+
+@section scripts {
+    <script>
+        var tabladata;
+        // Inicializar los datepickers
+        $("#txtfechaInicio").datepicker({dateFormat: 'yy/mm/dd' }).datepicker('setDate', new Date())
+        $("#txtfechaFinal").datepicker({ dateFormat: 'yy/mm/dd' }).datepicker('setDate', new Date());
+
+            // Cargar totales al inicio
+            $.ajax({
+                url: '@Url.Action("VistaBusquedaGrafico", "Home")',
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var objeto = data.resultado;
+                    $("#totalClientes").text(objeto.TotalCliente);
+                    $("#totalSolicitudes").text(objeto.TotalSolicitud);
+                    $("#totalQuejas").text(objeto.TotalQueja);
+                    $("#totalSugerencias").text(objeto.TotalSugerencia);
+                    $("#totalFelicitaciones").text(objeto.TotalFelicitaciones);
+
+                }
+            });//termina la carga de Datos en los Cards de TOTALES
+
+            // Botón Buscar
+            $("#btnBuscar").click(function () {
+                var url = '@Url.Action("listaReporte", "Home")' +
+                    "?fechaInicio=" + $("#txtfechaInicio").val() +
+                    "&fechaFinal=" + $("#txtfechaFinal").val() +
+                    "&referenciaSolicitud=" + $("#txtreferenciaSolicitud").val();
+
+                if ($.fn.DataTable.isDataTable("#tBusqueda")) {
+                    // Si ya está inicializada, recargar
+                    tabladata.ajax.url(url).load();
+                } else {
+                    // Primera vez que se inicializa
+                    tabladata = $("#tBusqueda").DataTable({
+                        responsive: true,
+                        ordering: false,
+                        ajax: {
+                            url: url,
+                            type: "GET",
+                            dataType: "json"
+                        },
+                        columns: [
+                            { data: "Fecha" },
+                            { data: "Clientes" },
+                            //{ data: "IdCategoria" },
+                            {
+                                data: "IdCategoria",
+                                render: function (data, type, row) {
+                                    const valor = (data || "").toString().toLowerCase();
+
+                                    if (valor === "queja") {
+                                        return '<span class="badge bg-secondary" style="font-size: 14px;">Queja</span>';
+                                    } else if (valor === "sugerencia") {
+                                        return '<span class="badge bg-info text-white" style="font-size: 14px;">Sugerencia</span>';
+                                    } else {
+                                        return '<span class="badge bg-custom-infoEstado text-white" style="font-size: 14px;">Felicitaciones</span>';
+                                    }
+                                }
+                            },
+                            { data: "Referencia" }
+                        ],
+                        language: {
+                            url: "https://cdn.datatables.net/plug-ins/2.2.2/i18n/es-ES.json"
+                        }
+                    });
+                }
+            });
+
+        // Logica de Lista
+            var url = '@Url.Action("listaReporte", "Home")' +
+                "?fechaInicio=" + $("#txtfechaInicio").val() +
+                "&fechaFinal=" + $("#txtfechaFinal").val() +
+                "&referenciaSolicitud=" + $("#txtreferenciaSolicitud").val();
+            ///////////////////
+            tabladata = $("#tBusqueda").DataTable({
+            responsive: true,
+            ordering: false,
+            "ajax": {
+               url: url,
+               type: "GET",
+               dataType: "json"
+            },
+            "columns": [
+                { "data":"Fecha"},
+                { "data": "Clientes" },
+                //{ "data": "IdCategoria" },
+                {
+                    data: "IdCategoria",
+                    render: function (data, type, row) {
+                        const valor = (data || "").toString().toLowerCase();
+
+                        if (valor === "queja") {
+                            return '<span class="badge bg-secondary" style="font-size: 14px;">Queja</span>';
+                        } else if (valor === "sugerencia") {
+                            return '<span class="badge bg-info text-white" style="font-size: 14px;">Sugerencia</span>';
+                        } else {
+                            return '<span class="badge bg-custom-infoEstado text-white" style="font-size: 14px;">Felicitaciones</span>';
+                        }
+                    }
+                },
+                { "data": "Referencia" },
+            ],
+             "language": {
+                "url": "https://cdn.datatables.net/plug-ins/2.2.2/i18n/es-ES.json"
+            }
+            });//termina la tabla
+
+        // Botón Recarga de Datos
+        $("#tBusqueda").on("click", function () {
+             var new_url = '@Url.Action("listaReporte", "Home")' +
+             "?fechaInicio=" + $("#txtfechaInicio").val() +
+             "&fechaFinal=" + $("#txtfechaFinal").val() +
+                "&referenciaSolicitud=" + $("#txtreferenciaSolicitud").val();
+
+            tabladata.ajax.url(new_url).load();
+        });
+
+
+
+    </script>
+}
+

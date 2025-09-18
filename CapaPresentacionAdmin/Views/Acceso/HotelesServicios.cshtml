@@ -1,0 +1,158 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>HotelesServicios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .hotel-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+            .hotel-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+                cursor: pointer;
+            }
+
+        .hotel-image {
+            height: 180px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .hotel-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .social-style {
+            background-color: #fff;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container py-4">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-primary">🏨 Brindamos nuestros servicios a hoteles locales</h2>
+        </div>
+        <div class="mt-3 text-center">
+            <a href="@Url.Action("LogIn", "Acceso")" class="btn btn-outline-primary px-4 mb-4">
+                <i class="fas fa-arrow-left me-2"></i>Volver al inicio de sesión
+            </a>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card hotel-card" onclick="window.open('https://localhost:44362/', '_blank')">
+                    <img src="~/Content/imag/motel6.jpeg" class="hotel-image" alt="Hotel Gardens">
+                    <div class="card-body">
+                        <h5 class="hotel-title">Hotel Gardens</h5>
+                        <p class="text-muted mb-0"><i class="fa-solid fa-map-pin me-2"></i>San Salvador</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card hotel-card" onclick="window.open('https://localhost:44362/', '_blank')">
+                    <img src="~/Content/imag/hitaly.jpeg" class="hotel-image" alt="Shuttle San Benito">
+                    <div class="card-body">
+                        <h5 class="hotel-title">Hotel Shuttle San Benito</h5>
+                        <p class="text-muted mb-0"><i class="fa-solid fa-map-pin me-2"></i>San Benito</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card hotel-card" onclick="window.open('https://localhost:44362/', '_blank')">
+                    <img src="~/Content/imag/marriot.jpeg" class="hotel-image" alt="Marriott">
+                    <div class="card-body">
+                        <h5 class="hotel-title">Hotel Marriott San Salvador</h5>
+                        <p class="text-muted mb-0"><i class="fa-solid fa-map-pin me-2"></i>Escalón</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card hotel-card" onclick="window.open('https://localhost:44362/', '_blank')">
+                    <img src="~/Content/imag/lujo.jpeg" class="hotel-image" alt="Las Hojas">
+                    <div class="card-body">
+                        <h5 class="hotel-title">Las Hojas Resort</h5>
+                        <p class="text-muted mb-0"><i class="fa-solid fa-map-pin me-2"></i>La Libertad</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card hotel-card" onclick="window.open('https://localhost:44362/', '_blank')">
+                    <img src="~/Content/imag/motel6.jpeg" class="hotel-image" alt="Hotel Gardens">
+                    <div class="card-body">
+                        <h5 class="hotel-title">Hotel Gardens</h5>
+                        <p class="text-muted mb-0"><i class="fa-solid fa-map-pin me-2"></i>San Salvador</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card hotel-card" onclick="window.open('https://localhost:44362/', '_blank')">
+                    <img src="~/Content/imag/hitaly.jpeg" class="hotel-image" alt="Shuttle San Benito">
+                    <div class="card-body">
+                        <h5 class="hotel-title">Hotel Shuttle San Benito</h5>
+                        <p class="text-muted mb-0"><i class="fa-solid fa-map-pin me-2"></i>San Benito</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 hotel-extra d-none">
+                <div class="card hotel-card" onclick="window.open('https://localhost:44362/', '_blank')">
+                    <img src="~/Content/imag/marriot.jpeg" class="hotel-image" alt="Marriott">
+                    <div class="card-body">
+                        <h5 class="hotel-title">Hotel Marriott San Salvador</h5>
+                        <p class="text-muted mb-0"><i class="fa-solid fa-map-pin me-2"></i>Escalón</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 hotel-extra d-none">
+                <div class="card hotel-card" onclick="window.open('https://localhost:44362/', '_blank')">
+                    <img src="~/Content/imag/lujo.jpeg" class="hotel-image" alt="Las Hojas">
+                    <div class="card-body">
+                        <h5 class="hotel-title">Las Hojas Resort</h5>
+                        <p class="text-muted mb-0"><i class="fa-solid fa-map-pin me-2"></i>La Libertad</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 hotel-extra d-none">
+                <div class="card hotel-card" onclick="window.open('https://localhost:44362/', '_blank')">
+                    <img src="~/Content/imag/lujo.jpeg" class="hotel-image" alt="Las Hojas">
+                    <div class="card-body">
+                        <h5 class="hotel-title">Las Hojas Resort</h5>
+                        <p class="text-muted mb-0"><i class="fa-solid fa-map-pin me-2"></i>La Libertad</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <button id="btnVerMas" class="btn btn-outline-primary px-4">
+                <i class="fa-solid fa-plus me-2"></i>Ver más
+            </button>
+        </div>
+    </div>
+    <script>
+        document.getElementById('btnVerMas').addEventListener('click', function () {
+            document.querySelectorAll('.hotel-extra').forEach(el => el.classList.remove('d-none'));
+            this.classList.add('d-none'); // Oculta el botón
+        });
+    </script>
+</body>
+</html>
