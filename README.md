@@ -4,6 +4,9 @@ Feedback360 is a classic .NET MVC project for managing requests and feedback.
 It uses SQL Server with stored procedures and provides dynamic data visualization with Chart.js.
 The frontend leverages HTML, CSS, Bootstrap, JavaScript, and jQuery/AJAX for a responsive user experience.
 
+Note: The original module called CapaRestaurante is no longer in use as such. It has been repurposed to serve as the main page of a hotel, for which the Feedback360 service was developed.
+This project is part of a university assignment.
+
 Main Features ⚡
 User and role management
 Data visualization with Chart.js
