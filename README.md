@@ -32,7 +32,7 @@ Configure your SQL Server connection string in Web.config:
 Run the project using IIS Express or your preferred server.
 
 Database 💾
-A backup of the database is included in the Database folder.
+A backup of the database is included in the Database file(Feedback360DataBase.sql).
 Passwords are encrypted using:
 UPDATE Usuario 
 SET Password = ENCRYPTBYPASSPHRASE('quejas2025', '123*') 
