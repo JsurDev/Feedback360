@@ -4,31 +4,40 @@
 * text=auto
 
 ###############################################################################
-# Ignorar archivos binarios y de compilación
+# Forzar que solo C#/.NET cuente como código
 ###############################################################################
-# .NET build outputs
+*.cs linguist-detectable=true
+*.csproj linguist-detectable=true
+*.sln linguist-detectable=true
+*.cshtml linguist-detectable=true
+*.razor linguist-detectable=true
+
+###############################################################################
+# Marcar TODO lo demás como vendored (no cuenta en estadísticas)
+###############################################################################
+*.js linguist-vendored
+*.min.js linguist-vendored
+*.json linguist-vendored
+*.css linguist-vendored
+*.html linguist-vendored
+
+# Archivos de compilación
 bin/** linguist-vendored
 obj/** linguist-vendored
 *.dll linguist-vendored
 *.exe linguist-vendored
 *.pdb linguist-vendored
 
-# VS y Rider project files que no son fuente
+# Configuración de VS
 *.suo linguist-vendored
 *.user linguist-vendored
 *.cache linguist-vendored
 *.log linguist-vendored
 
-###############################################################################
-# Ignorar librerías externas y dependencias
-###############################################################################
 # Node / frontend
 node_modules/** linguist-vendored
 wwwroot/lib/** linguist-vendored
 /dist/** linguist-vendored
-*.min.js linguist-vendored
-*.css linguist-vendored
-*.json linguist-vendored
 
 # Otros assets
 *.png linguist-vendored
@@ -40,21 +49,7 @@ wwwroot/lib/** linguist-vendored
 *.woff2 linguist-vendored
 *.ttf linguist-vendored
 
-###############################################################################
-# Forzar archivos de código como principales
-###############################################################################
-*.cs linguist-detectable=true
-*.csproj linguist-detectable=true
-*.vb linguist-detectable=true
-*.sln linguist-detectable=true
-
-# Opcionales: archivos de Razor
-*.cshtml linguist-detectable=true
-*.razor linguist-detectable=true
-
-###############################################################################
-# Ignorar documentos que no son código
-###############################################################################
+# Documentos
 *.md linguist-vendored
 *.txt linguist-vendored
 *.pdf linguist-vendored
@@ -62,8 +57,5 @@ wwwroot/lib/** linguist-vendored
 *.docx linguist-vendored
 *.rtf linguist-vendored
 
-###############################################################################
-# Extras para GitHub
-###############################################################################
-# Evitar que GitHub detecte automáticamente archivos de config como código
+# Configuración .NET
 appsettings*.json linguist-vendored
