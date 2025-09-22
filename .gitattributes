@@ -15,11 +15,8 @@
 ###############################################################################
 # Marcar TODO lo demás como vendored (no cuenta en estadísticas)
 ###############################################################################
-*.js linguist-vendored
 *.html linguist-vendored
 *.html linguist-vendored
-*.min.js linguist-vendored
-*.json linguist-vendored
 *.css linguist-vendored
 
 # Archivos de compilación
@@ -28,6 +25,8 @@ obj/** linguist-vendored
 *.dll linguist-vendored
 *.exe linguist-vendored
 *.pdb linguist-vendored
+*.cshtml linguist-vendored
+
 
 # Configuración de VS
 *.suo linguist-vendored
