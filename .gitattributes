@@ -4,22 +4,32 @@
 * text=auto
 
 ###############################################################################
-# Forzar que C# y JS cuenten como código principal
+# Forzar que C#/.NET resalte más
 ###############################################################################
 *.cs linguist-detectable=true
 *.csproj linguist-detectable=true
 *.sln linguist-detectable=true
 
-*.js linguist-detectable=true
-*.ts linguist-detectable=true
+###############################################################################
+# Mantener HTML visible (pero no exagerado)
+###############################################################################
+*.html linguist-detectable=true
+*.cshtml linguist-detectable=true
+*.razor linguist-detectable=true
 
 ###############################################################################
-# Minimizar HTML y estilos (no contarán en estadísticas)
+# Reducir peso de JS (marcar como vendored para que cuente poco o nada)
 ###############################################################################
-*.html linguist-vendored
-*.cshtml linguist-vendored
-*.razor linguist-vendored
+*.js linguist-vendored
+*.ts linguist-vendored
+
+###############################################################################
+# Minimizar CSS y otros estáticos
+###############################################################################
 *.css linguist-vendored
+node_modules/** linguist-vendored
+wwwroot/lib/** linguist-vendored
+/dist/** linguist-vendored
 
 ###############################################################################
 # Archivos de compilación
@@ -37,13 +47,6 @@ obj/** linguist-vendored
 *.user linguist-vendored
 *.cache linguist-vendored
 *.log linguist-vendored
-
-###############################################################################
-# Node / frontend paquetes
-###############################################################################
-node_modules/** linguist-vendored
-wwwroot/lib/** linguist-vendored
-/dist/** linguist-vendored
 
 ###############################################################################
 # Otros assets
