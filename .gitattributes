@@ -74,4 +74,5 @@
 ###############################################################################
 # Reducir visibilidad de JavaScript
 ###############################################################################
-*.ts linguist-detectable=false
+*.js     linguist-detectable=false
+*.ts     linguist-detectable=false
