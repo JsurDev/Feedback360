@@ -26,7 +26,7 @@
 
 # Carpeta de librerías JS → ignorada
 node_modules/** linguist-vendored
-wwwroot/lib/** linguist-vendored
+wwwroot/lib/** linguist-true
 /dist/** linguist-vendored
 /vendor/** linguist-vendored
 
