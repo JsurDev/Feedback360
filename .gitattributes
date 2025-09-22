@@ -61,3 +61,17 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+###############################################################################
+
+# Destacar C# / .NET como principal
+###############################################################################
+*.cs linguist-detectable=true
+*.csproj linguist-detectable=true
+*.sln linguist-detectable=true
+*.cshtml linguist-detectable=true
+*.razor linguist-detectable=true
+
+###############################################################################
+# Reducir visibilidad de JavaScript
+###############################################################################
+*.ts linguist-detectable=false
