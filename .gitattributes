@@ -22,3 +22,4 @@
 ###############################################################################
 *.js     linguist-detectable=false
 *.ts     linguist-detectable=false
+*.css    linguist-detectable=false
