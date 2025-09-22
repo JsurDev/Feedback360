@@ -4,42 +4,50 @@
 * text=auto
 
 ###############################################################################
-# Forzar que solo C#/.NET cuente como código
+# Forzar que C# y JS cuenten como código principal
 ###############################################################################
 *.cs linguist-detectable=true
 *.csproj linguist-detectable=true
 *.sln linguist-detectable=true
-*.cshtml linguist-detectable=true
-*.razor linguist-detectable=true
+
+*.js linguist-detectable=true
+*.ts linguist-detectable=true
 
 ###############################################################################
-# Marcar TODO lo demás como vendored (no cuenta en estadísticas)
+# Minimizar HTML y estilos (no contarán en estadísticas)
 ###############################################################################
 *.html linguist-vendored
-*.html linguist-vendored
+*.cshtml linguist-vendored
+*.razor linguist-vendored
 *.css linguist-vendored
 
+###############################################################################
 # Archivos de compilación
+###############################################################################
 bin/** linguist-vendored
 obj/** linguist-vendored
 *.dll linguist-vendored
 *.exe linguist-vendored
 *.pdb linguist-vendored
-*.cshtml linguist-vendored
 
-
+###############################################################################
 # Configuración de VS
+###############################################################################
 *.suo linguist-vendored
 *.user linguist-vendored
 *.cache linguist-vendored
 *.log linguist-vendored
 
-# Node / frontend
+###############################################################################
+# Node / frontend paquetes
+###############################################################################
 node_modules/** linguist-vendored
 wwwroot/lib/** linguist-vendored
 /dist/** linguist-vendored
 
+###############################################################################
 # Otros assets
+###############################################################################
 *.png linguist-vendored
 *.jpg linguist-vendored
 *.gif linguist-vendored
@@ -49,7 +57,9 @@ wwwroot/lib/** linguist-vendored
 *.woff2 linguist-vendored
 *.ttf linguist-vendored
 
+###############################################################################
 # Documentos
+###############################################################################
 *.md linguist-vendored
 *.txt linguist-vendored
 *.pdf linguist-vendored
@@ -57,5 +67,7 @@ wwwroot/lib/** linguist-vendored
 *.docx linguist-vendored
 *.rtf linguist-vendored
 
+###############################################################################
 # Configuración .NET
+###############################################################################
 appsettings*.json linguist-vendored
