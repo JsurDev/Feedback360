@@ -12,14 +12,9 @@
 *.cshtml linguist-detectable=true
 *.razor  linguist-detectable=true
 
-###############################################################################
-# HTML siempre visible
-###############################################################################
-*.html   linguist-detectable=true
 
 ###############################################################################
 # Reducir visibilidad de JavaScript y TypeScript
 ###############################################################################
-*.js     linguist-detectable=false
 *.ts     linguist-detectable=false
 *.css    linguist-detectable=false
